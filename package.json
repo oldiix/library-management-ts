@@ -6,9 +6,10 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
-    "lint": "eslint src --ext .ts",
-    "lint:fix": "eslint src --ext .ts --fix",
-    "format": "prettier --write src"
+    "lint": "eslint src tests --ext .ts",
+    "lint:fix": "eslint src tests --ext .ts --fix",
+    "format": "prettier --write src tests",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -27,16 +28,21 @@
     "bootstrap": "^5.3.8"
   },
   "devDependencies": {
+    "@types/chai": "^4.3.20",
+    "@types/mocha": "^10.0.10",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
+    "chai": "^4.5.0",
     "css-loader": "^7.1.5",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-prettier": "^5.5.6",
     "html-webpack-plugin": "^5.6.8",
+    "mocha": "^10.8.2",
     "prettier": "^3.9.9",
     "style-loader": "^4.0.0",
     "ts-loader": "^9.6.2",
+    "ts-node": "^10.9.2",
     "typescript": "5.5",
     "webpack": "^5.111.1",
     "webpack-cli": "^5.1.4",
