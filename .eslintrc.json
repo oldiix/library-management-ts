@@ -22,7 +22,8 @@
     "no-alert": "error",
     "eqeqeq": "error",
     "prefer-const": "error",
-    "@typescript-eslint/no-explicit-any": "error"
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-namespace": "off"
   },
   "ignorePatterns": [
     "dist/",
