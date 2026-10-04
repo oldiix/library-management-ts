@@ -1,11 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './styles/main.css';
+import { LibraryService } from './services/LibraryService';
+import { renderApp } from './ui/render';
 
-const app = document.getElementById('app');
+const root = document.getElementById('app');
 
-if (app) {
-  const title = document.createElement('h1');
-  title.className = 'text-center my-4';
-  title.textContent = 'Система Управління Бібліотекою';
-  app.append(title);
+if (root) {
+  renderApp(root, new LibraryService());
 }
