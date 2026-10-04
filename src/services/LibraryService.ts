@@ -1,5 +1,6 @@
 import { Library } from './Library';
 import { Storage } from './Storage';
+import { NotificationService } from './NotificationService';
 import { Book } from '../models/Book';
 import { User } from '../models/User';
 import { IBook } from '../models/interfaces/IBook';
@@ -13,8 +14,11 @@ export class LibraryService {
   private books: Library<Book>;
   private users: Library<User>;
   private storage = new Storage();
+  private notifications: NotificationService;
 
-  constructor() {
+  constructor(notifications: NotificationService) {
+    this.notifications = notifications;
+
     const savedBooks = this.storage.load<IBook[]>(BOOKS_KEY) ?? [];
     const savedUsers = this.storage.load<IUser[]>(USERS_KEY) ?? [];
 
@@ -38,6 +42,42 @@ export class LibraryService {
   addUser(name: string, email: string): void {
     this.users.add(new User(generateId(), name, email));
     this.save();
+  }
+
+  borrowBook(bookId: number, userId: number): void {
+    const book = this.books.findById(bookId);
+    const user = this.users.findById(userId);
+
+    if (!book || book.isBorrowed) {
+      return;
+    }
+    if (!user) {
+      this.notifications.userNotFound(userId);
+      return;
+    }
+    if (!user.canBorrow()) {
+      this.notifications.limitReached(user);
+      return;
+    }
+
+    book.borrow(user.id);
+    user.addBook(book.id);
+    this.save();
+    this.notifications.bookBorrowed(book, user);
+  }
+
+  returnBook(bookId: number): void {
+    const book = this.books.findById(bookId);
+
+    if (!book || book.borrowedBy === null) {
+      return;
+    }
+
+    const user = this.users.findById(book.borrowedBy);
+    user?.removeBook(book.id);
+    book.returnBook();
+    this.save();
+    this.notifications.bookReturned(book);
   }
 
   private save(): void {

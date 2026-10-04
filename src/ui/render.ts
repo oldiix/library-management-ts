@@ -3,6 +3,7 @@ import { createBookForm } from './components/BookForm';
 import { createUserForm } from './components/UserForm';
 import { renderBookList } from './components/BookList';
 import { renderUserList } from './components/UserList';
+import { showUserIdModal } from './components/Modal';
 import { createCard, createElement } from './dom';
 
 export function renderApp(root: HTMLElement, service: LibraryService): void {
@@ -10,8 +11,20 @@ export function renderApp(root: HTMLElement, service: LibraryService): void {
   const userList = createElement('ul', 'list-group list-group-flush');
 
   const refreshLists = (): void => {
-    renderBookList(bookList, service.getBooks());
+    renderBookList(bookList, service.getBooks(), handleBorrow, handleReturn);
     renderUserList(userList, service.getUsers());
+  };
+
+  const handleBorrow = (bookId: number): void => {
+    showUserIdModal((userId) => {
+      service.borrowBook(bookId, userId);
+      refreshLists();
+    });
+  };
+
+  const handleReturn = (bookId: number): void => {
+    service.returnBook(bookId);
+    refreshLists();
   };
 
   const bookForm = createBookForm((title, author, year) => {
