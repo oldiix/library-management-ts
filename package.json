@@ -6,6 +6,7 @@
   "scripts": {
     "start": "webpack serve --mode development",
     "build": "webpack --mode production",
+    "deploy": "npm run build && gh-pages -d dist",
     "lint": "eslint src tests --ext .ts",
     "lint:fix": "eslint src tests --ext .ts --fix",
     "format": "prettier --write src tests",
@@ -39,6 +40,7 @@
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
     "eslint-plugin-prettier": "^5.5.6",
+    "gh-pages": "^6.3.0",
     "html-webpack-plugin": "^5.6.8",
     "husky": "^9.1.7",
     "mocha": "^10.8.2",
